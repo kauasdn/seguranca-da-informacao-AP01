@@ -3,10 +3,32 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sistema de Ocorrências Acadêmicas — versão inicial</title>
+  <title>Sistema de Ocorrências Acadêmicas — versão corrigida</title>
   <link rel="stylesheet" href="style.css" />
+  <style>
+    /* MEDIDA DE SEGURANÇA VISUAL: Princípio do Menor Privilégio na Interface */
+    .restricted-view {
+      display: none !important;
+    }
+    /* AVISO DE CONFORMIDADE: Alerta de ambiente inseguro para dados reais */
+    .security-banner {
+      background-color: #fff3cd;
+      color: #856404;
+      padding: 12px;
+      text-align: center;
+      font-weight: bold;
+      border-bottom: 2px solid #ffeeba;
+      font-size: 0.9rem;
+      z-index: 9999;
+    }
+  </style>
 </head>
 <body>
+
+  <div class="security-banner">
+    ⚠️ AMBIENTE DIDÁTICO / FRONT-END APENAS: Este sistema é um protótipo local e NÃO está em conformidade com a LGPD. Não insira dados reais.
+  </div>
+
   <header class="topbar">
     <div>
       <p class="eyebrow">Segurança da Informação</p>
@@ -21,7 +43,7 @@
   </header>
 
   <main class="layout">
-        <section id="loginView" class="card login-card">
+    <section id="loginView" class="card login-card">
       <div>
         <p class="eyebrow">Acesso</p>
         <h2>Entrar no sistema</h2>
@@ -63,7 +85,7 @@
 
           <div class="role-switch">
             <label>
-              Perfil ativo
+              Perfil Ativo (Simulação Local)
               <select id="roleSelect">
                 <option value="ALUNO">Aluno</option>
                 <option value="PROFESSOR">Professor</option>
@@ -77,37 +99,37 @@
           <p class="eyebrow">Ações rápidas</p>
           <h2>Ferramentas do painel</h2>
           <div class="actions">
-            <button id="exportBtn" class="btn secondary" type="button">Exportar todos os dados</button>
-            <button id="clearLogsBtn" class="btn secondary" type="button">Limpar logs</button>
-            <button id="resetBtn" class="btn danger" type="button">Restaurar dados iniciais</button>
+            <button id="exportBtn" class="btn secondary admin-only" type="button">Exportar todos os dados</button>
+            <button id="clearLogsBtn" class="btn secondary admin-only" type="button">Limpar logs</button>
+            <button id="resetBtn" class="btn danger admin-only" type="button">Restaurar dados iniciais</button>
           </div>
         </article>
       </section>
 
       <section class="grid two">
-        <article class="card">
+        <article id="occurrenceCreationCard" class="card prof-only admin-only">
           <p class="eyebrow">Nova ocorrência</p>
           <h2>Registrar ocorrência acadêmica</h2>
 
           <form id="occurrenceForm" class="form-grid">
             <label>
               Nome do aluno
-              <input id="studentName" type="text" placeholder="Ex.: João da Silva" />
+              <input id="studentName" type="text" placeholder="Ex.: João da Silva" required />
             </label>
 
             <label>
               Matrícula
-              <input id="studentId" type="text" placeholder="Ex.: 202400123" />
+              <input id="studentId" type="text" placeholder="Ex.: 202400123" required />
             </label>
 
             <label>
               CPF
-              <input id="studentCpf" type="text" placeholder="Ex.: 000.000.000-00" />
+              <input id="studentCpf" type="text" placeholder="Ex.: 000.000.000-00" required />
             </label>
 
             <label>
               E-mail pessoal
-              <input id="studentEmail" type="email" placeholder="aluno@email.com" />
+              <input id="studentEmail" type="email" placeholder="aluno@email.com" required />
             </label>
 
             <label>
@@ -138,17 +160,17 @@
 
             <label class="span-2">
               Descrição da ocorrência
-              <textarea id="description" rows="5" placeholder="Descreva o ocorrido..."></textarea>
+              <textarea id="description" rows="5" placeholder="Descreva o ocorrido..." required></textarea>
             </label>
 
-            <label class="span-2">
-              Observação interna
+            <label class="span-2 admin-only">
+              Observação interna (Restrito a Administradores)
               <textarea id="internalNote" rows="3" placeholder="Informação visível no painel..."></textarea>
             </label>
 
             <label class="check span-2">
-              <input id="privacyAck" type="checkbox" />
-              Confirmo que posso registrar estes dados.
+              <input id="privacyAck" type="checkbox" required />
+              Confirmo que posso registrar estes dados sob responsabilidade acadêmica.
             </label>
 
             <button class="btn primary span-2" type="submit">Salvar ocorrência</button>
@@ -176,7 +198,7 @@
           </div>
 
           <div class="notice">
-            A busca percorre todos os campos cadastrados e todos os perfis acessam a mesma base.
+            A busca percorre os campos autorizados conforme o seu nível de privilégio atual.
           </div>
         </article>
       </section>
@@ -201,7 +223,7 @@
                 <th>Prioridade</th>
                 <th>Status</th>
                 <th>Descrição</th>
-                <th>Ações</th>
+                <th class="admin-only">Ações</th>
               </tr>
             </thead>
             <tbody id="occurrencesTable"></tbody>
@@ -209,13 +231,13 @@
         </div>
       </section>
 
-      <section class="card">
+      <section id="auditSection" class="card admin-only">
         <div class="section-header">
           <div>
             <p class="eyebrow">Auditoria</p>
             <h2>Logs do sistema</h2>
           </div>
-          <span class="badge muted">armazenamento local</span>
+          <span class="badge muted">armazenamento local estático</span>
         </div>
 
         <div id="auditLog" class="log-list"></div>
@@ -225,7 +247,7 @@
 
   <footer class="footer">
     <p>
-      Protótipo estático para atividade prática. Publicável em GitHub Pages.
+      Protótipo estático com defesas locais aplicadas. Atividade Prática — Católica SC.
     </p>
   </footer>
 
