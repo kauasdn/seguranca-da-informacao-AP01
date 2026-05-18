@@ -1,3 +1,20 @@
+# Modificações feitas no projeto
+
+[cite_start]Para mitigar os riscos de segurança inerentes a uma aplicação baseada puramente no lado do cliente (front-end) [cite: 52][cite_start], os arquivos estruturais e de script foram refatorados com a implementação de boas práticas de Segurança da Informação[cite: 103]:
+
+#### No arquivo `index.html`:
+* [cite_start]**Defesa Visual e Menor Privilégio:** Injeção de uma folha de estilo específica (`.restricted-view`) para ocultar de forma dinâmica componentes e seções da interface conforme o nível de acesso do usuário (como o painel de logs de auditoria, ferramentas de limpeza e o formulário de cadastro)[cite: 100, 101, 119, 125].
+* [cite_start]**Aviso de Conformidade (Mitigação de Riscos):** Inclusão de um banner global de segurança fixado no topo da página, alertando explicitamente que o ecossistema é um protótipo didático e não está em conformidade com a LGPD para o tratamento de dados reais[cite: 89, 131].
+* [cite_start]**Atributos de Entrada:** Inclusão do modificador padrão `required` nos campos críticos do formulário para forçar uma validação estrutural inicial no cliente[cite: 122].
+
+#### No arquivo `app.js`:
+* [cite_start]**Sanitização Universal (Proteção contra XSS):** Implementação da função utilitária `sanitize()`, que intercepta todas as strings capturadas dos inputs de texto antes que elas sejam salvas no `LocalStorage` ou renderizadas na tabela através de `innerHTML`[cite: 119, 122]. Isso neutraliza ataques de injeção de scripts maliciosos.
+* [cite_start]**Controle de Acesso Funcional (RBAC):** Criação da rotina `aplicarPoliticaAcesso()`[cite: 97]. [cite_start]Agora, mesmo se um usuário simulado como "Aluno" tentar forçar a barra manipulando o console do navegador, as funções internas de criação, exclusão e exportação barram a execução de forma lógica no escopo do script e registram uma tentativa de violação de segurança[cite: 96, 99].
+* [cite_start]**Minimização e Máscara de Dados (Privacidade):** Criação da função `maskData()`[cite: 63, 121, 128]. [cite_start]Quando perfis com privilégios menores (como Alunos ou Professores) consultam a listagem de registros, dados pessoais e sensíveis como o CPF e o telefone são automaticamente mascarados em tempo de execução para evitar vazamento visual[cite: 61, 63, 128].
+* [cite_start]**Simulação de Credenciais Seguras (Hashing):** Substituição do armazenamento e conferência de senhas em texto claro por uma validação simulada baseada em hashes criptográficos (SHA-256)[cite: 90], alinhando o código com as diretrizes recomendadas de segurança para dados em repouso.
+
+---
+
 # Sistema de Ocorrências Acadêmicas — Protótipo Didático
 
 Protótipo web desenvolvido para atividade prática da disciplina **Segurança da Informação**.
